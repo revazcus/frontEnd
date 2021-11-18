@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div>
+    <table style="padding: 10px; border: double black;">
+        <tr>
+            <th style="padding: 10px; border: double black;">Name</th>
+            <th style="padding: 10px; border: double black;">Last Name</th>
+            <th style="padding: 10px; border: double black;">Age</th>
+            <th style="padding: 10px; border: double black;">Average Salary</th>
+        </tr>
+        <tr th:each="user : ${userlst}">
+            <td style="padding: 10px; border: double black;" th:text="${user.getName()}"></td>
+            <td style="padding: 10px; border: double black;" th:text="${user.getLastName()}"></td>
+            <td style="padding: 10px; border: double black;" th:text="${user.getAge()}"></td>
+            <td style="padding: 10px; border: double black;" th:text="${user.getAvgSalary()}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
