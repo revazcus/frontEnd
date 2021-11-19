@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div>
+    <form th:method="POST" th:action="@{/editUser}" th:object="${user}">
+        <input type="hidden" th:field="*{id}">
+        <label for="name">
+            <p>NAME</p>
+            <input type="text" th:field="*{name}" id="name">
+        </label>
+        <label for="lastName">
+            <p>LAST NAME</p>
+            <input type="text" th:field="*{lastName}" id="lastName">
+        </label>
+        <label for="age">
+            <p>AGE</p>
+            <input type="number" th:field="*{age}" id="age">
+        </label>
+        <label for="avgSalary">
+            <p>AVERAGE SALARY</p>
+            <input type="number" th:field="*{avgSalary}" id="avgSalary">
+        </label>
+        <br/>
+        <input type="submit"/>
+    </form>
+</div>
+</body>
+</html>

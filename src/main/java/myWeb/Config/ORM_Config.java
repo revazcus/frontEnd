@@ -1,5 +1,6 @@
 package myWeb.Config;
 
+import myWeb.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -35,12 +36,13 @@ public class ORM_Config {
         return dataSource;
     }
 
-    @Bean
+    @Bean(name = "em")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(getDataSource());
         em.setPackagesToScan(env.getRequiredProperty("db.packageToScan"));
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        em.setPersistenceUnitName("user");
 
         Properties props=new Properties();
         props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));

@@ -1,30 +1,30 @@
 package myWeb.Dao;
 
 import myWeb.Model.User;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository
+@Component
+@Transactional
 public class UserDaoImpl implements UserDao{
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "user")
     private EntityManager entityManager;
 
 
     @Override
     public List<User> getAllUsers() {
-        return entityManager.createQuery("select user from User user", User.class)
+        return entityManager.createQuery("select c from User c", User.class)
                 .getResultList();
     }
 
     @Transactional
     @Override
     public void saveUser(User user) {
-        entityManager.getTransaction().begin();
         User user1 = entityManager.merge(user);
         entityManager.persist(user1);
     }

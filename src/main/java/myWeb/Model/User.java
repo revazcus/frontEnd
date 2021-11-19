@@ -3,11 +3,12 @@ package myWeb.Model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="usertable")
+@Table(name="user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @Column(name = "id")
     private long id;
 
     @Column(name = "name")
@@ -21,6 +22,8 @@ public class User {
 
     @Column(name = "avgSalary")
     private int avgSalary;
+
+
 
     public User(String name, String lastName, byte age, int avgSalary) {
         this.name = name;
@@ -69,5 +72,16 @@ public class User {
 
     public void setAvgSalary(int avgSalary) {
         this.avgSalary = avgSalary;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", avgSalary=" + avgSalary +
+                '}';
     }
 }
