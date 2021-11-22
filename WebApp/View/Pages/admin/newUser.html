@@ -7,7 +7,7 @@
 </head>
 <body>
 <div>
-    <form th:method="POST" th:action="@{/newUser}" th:object="${user}">
+    <form th:method="POST" th:action="@{/admin/newUser}" th:object="${user}">
         <label for="name">
             <p>NAME</p>
             <input type="text" th:field="*{name}" id="name">
@@ -23,6 +23,18 @@
         <label for="avgSalary">
             <p>AVERAGE SALARY</p>
             <input type="number" th:field="*{avgSalary}" id="avgSalary">
+        </label>
+        <label for="username">
+            <p>USERNAME</p>
+            <input type="text" th:field="*{username}" id="username">
+        </label>
+        <label for="password">
+            <p>PASSWORD</p>
+            <input type="text" th:field="*{password}" id="password">
+        </label>
+        <label for="admin">
+            <p>Admin</p>
+            <input type="checkbox" name="access" th:checked="${access}" id="admin">
         </label>
         <br/>
         <input type="submit"/>

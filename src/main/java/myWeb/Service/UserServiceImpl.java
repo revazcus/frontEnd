@@ -3,13 +3,18 @@ package myWeb.Service;
 
 import myWeb.Dao.UserDao;
 import myWeb.Model.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Component
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
+
+
 
     private final UserDao userDao;
 
@@ -23,8 +28,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
-        userDao.saveUser(user);
+    public void saveUser(User user, String access) {
+        userDao.saveUser(user, access);
+
     }
 
     @Override
@@ -35,5 +41,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long id) {
         return userDao.getUserById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        return userDao.loadUserByUsername(username);
     }
 }

@@ -13,6 +13,8 @@
             <th style="padding: 10px; border: double black;">Last Name</th>
             <th style="padding: 10px; border: double black;">Age</th>
             <th style="padding: 10px; border: double black;">Average Salary</th>
+            <th style="padding: 10px; border: double black;">Username</th>
+            <th style="padding: 10px; border: double black;">Password</th>
             <th style="padding: 10px; border: double black;">Management</th>
         </tr>
         <tr th:each="user : ${userlst}">
@@ -20,10 +22,13 @@
             <td style="padding: 10px; border: double black;" th:text="${user.getLastName()}"></td>
             <td style="padding: 10px; border: double black;" th:text="${user.getAge()}"></td>
             <td style="padding: 10px; border: double black;" th:text="${user.getAvgSalary()}"></td>
-            <td style="padding: 10px; border: double black;"><a th:href="@{/editUser/{id}(id=${user.getId()})}">Edit</a> <a th:href="@{/deleteUser/{id}(id=${user.getId()})}">Delete</a></td>
+            <td style="padding: 10px; border: double black;" th:text="${user.getUsername()}"></td>
+            <td style="padding: 10px; border: double black;" th:text="${user.getPassword()}"></td>
+            <td style="padding: 10px; border: double black;"><a th:href="@{/admin/editUser/{id}(id=${user.getId()})}">Edit</a> <a th:href="@{/admin/deleteUser/{id}(id=${user.getId()})}">Delete</a></td>
         </tr>
     </table>
 </div>
-<a href="/webApp2_war_exploded/newUser">Add User!</a>
+<a href="/admin/newUser">Add User!</a>
+<a href="/admin/hello">Go back to main page.</a>
 </body>
 </html>
