@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
 
@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void saveUser(User user, String access) {
-        userDao.saveUser(user, access);
+    public void saveUser(User user) {
+        userDao.saveUser(user);
 
     }
 

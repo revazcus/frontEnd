@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserDao {
     List<User> getAllUsers();
-    void saveUser(User user, String access);
+    void saveUser(User user);
     void deleteUser(User user);
     User getUserById(Long id);
     UserDetails loadUserByUsername(String username);

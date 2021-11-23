@@ -6,20 +6,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import static javax.persistence.CascadeType.DETACH;
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.*;
 
 @Entity
 @Table(name="user")
 public class User implements UserDetails {
 
-
-
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {MERGE, PERSIST},fetch = FetchType.EAGER)
     @JoinTable(
-            name = "usersAndRoles",
+            name = "users_And_Roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
@@ -27,7 +25,6 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private long id;
 
     @Column(name = "name")
@@ -36,11 +33,8 @@ public class User implements UserDetails {
     @Column(name = "lastName")
     private String lastName;
 
-    @Column(name = "age")
-    private byte age;
-
-    @Column(name = "avgSalary")
-    private int avgSalary;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "username")
     private String username;
@@ -48,13 +42,13 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    public User(String name, String lastName, byte age, int avgSalary, String username, String password) {
+    public User(String name, String lastName, String email, String username, String password, Set<Role> roleSet) {
         this.name = name;
         this.lastName = lastName;
-        this.age = age;
-        this.avgSalary = avgSalary;
+        this.email = email;
         this.username = username;
         this.password = password;
+        this.roleSet = roleSet;
     }
 
     public User() {}
@@ -88,20 +82,12 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-    public byte getAge() {
-        return age;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAge(byte age) {
-        this.age = age;
-    }
-
-    public int getAvgSalary() {
-        return avgSalary;
-    }
-
-    public void setAvgSalary(int avgSalary) {
-        this.avgSalary = avgSalary;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setUsername(String username) {
@@ -116,8 +102,8 @@ public class User implements UserDetails {
         return roleSet;
     }
 
-    public void setRoles(String roleSet) {
-        this.roleSet = new HashSet<>();
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
     }
 
     @Override
@@ -153,5 +139,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id && Objects.equals(email, user.email) && Objects.equals(roleSet, user.roleSet) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roleSet, id, name, lastName, email, username, password);
     }
 }

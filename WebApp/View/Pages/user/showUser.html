@@ -10,8 +10,7 @@
     <h1>Hello! Here are your account details:</h1>
     <p>Name:<span th:utext="|${user.getName()}|"></span></p>
     <p>Last name:<span th:utext="|${user.getLastName()}|"></span></p>
-    <p>Age:<span th:utext="|${user.getAge()}|"></span></p>
-    <p>Average Salary:<span th:utext="|${user.getAvgSalary()}|"></span></p>
+    <p>Email:<span th:utext="|${user.getEmail()}|"></span></p>
     <p>Role:<span th:utext="|${user.role}|"></span></p>
 
     <a th:href="@{/{role}/hello(role=${user.getRole()})}">Go back to home page.</a>

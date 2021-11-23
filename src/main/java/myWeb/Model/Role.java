@@ -3,16 +3,20 @@ package myWeb.Model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "role")
 public class Role implements GrantedAuthority {
+
     @Id
-    @GeneratedValue
-    @Column(name = "role_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToMany(mappedBy = "roleSet")
+    Set<User> userSet = new HashSet<>();
 
     private String role;
 

@@ -3,6 +3,7 @@ package myWeb.Dao;
 import myWeb.Model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -10,13 +11,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
 @Transactional
 public class UserDaoImpl implements UserDao {
 
     @PersistenceContext(unitName = "user")
     private EntityManager entityManager;
-
 
     @Override
     public List<User> getAllUsers() {
@@ -26,19 +26,9 @@ public class UserDaoImpl implements UserDao {
 
     @Transactional
     @Override
-    public void saveUser(User user, String access) {
+    public void saveUser(User user) {
         User user1 = entityManager.merge(user);
         entityManager.persist(user1);
-        entityManager.createNativeQuery("insert into usersandroles (user_id, role_id) values (?,?)")
-                .setParameter(1, user1.getId())
-                .setParameter(2, 1)
-                .executeUpdate();
-        if (access.equals("on")){
-            entityManager.createNativeQuery("insert into usersandroles (user_id, role_id) values (?,?)")
-                    .setParameter(1, user1.getId())
-                    .setParameter(2, 2)
-                    .executeUpdate();
-        }
     }
 
     @Transactional
