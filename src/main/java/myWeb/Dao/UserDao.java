@@ -1,15 +1,18 @@
 package myWeb.Dao;
 
 import myWeb.Model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface UserDao {
-    List<User> getAllUsers();
-    void saveUser(User user);
-    void deleteUser(User user);
-    User getUserById(Long id);
-    UserDetails loadUserByUsername(String username);
+@Repository
+public interface UserDao extends JpaRepository<User, Long> {
+    @Query("SELECT u FROM User u WHERE u.username = :username")
+    User loadUserByUsername(@Param("username") String username);
+
 }

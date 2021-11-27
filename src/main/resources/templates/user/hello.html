@@ -12,10 +12,7 @@
         <h1 th:text="${msg}"></h1>
     </th:block>
     <div>
-        <a href="/user/showUser">Show your profile data.{admin}</a>
-    </div>
-    <div>
-        <a href="/admin/userList">Show user list.{admin}</a>
+        <a th:href="@{/user/showUser}">Show your profile data.</a>
     </div>
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Logout" />

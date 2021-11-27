@@ -1,7 +1,6 @@
 package myWeb.Service;
 
 import myWeb.Dao.RoleDao;
-import myWeb.Dao.RoleDaoImpl;
 import myWeb.Model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,7 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService{
 
     @Autowired
-    RoleDao roleDao = new RoleDaoImpl();
+    RoleDao roleDao;
 
     @Override
     public Role getAuthByName(String name) {
@@ -21,11 +20,12 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public Role getRoleById(Long id) {
-        return roleDao.getRoleById(id);
+        return roleDao.findById(id)
+                .orElse(null);
     }
 
     @Override
     public List<Role> getAllRoles() {
-        return roleDao.getAllRoles();
+        return roleDao.findAll();
     }
 }

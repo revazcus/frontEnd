@@ -33,7 +33,7 @@ public class AdminController {
         messages.add("Welcome to my web page.");
         messages.add("Below are your available actions:");
         model.addAttribute("messages", messages);
-        return "/admin/hello";
+        return "admin/hello";
     }
 
     @GetMapping(value = "/admin/userList")
