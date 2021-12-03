@@ -33,20 +33,21 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "age")
+    private Byte age;
+
     @Column(name = "email")
     private String email;
 
-    @Column(name = "username")
-    private String username;
 
     @Column(name = "password")
     private String password;
 
-    public User(String name, String lastName, String email, String username, String password, Set<Role> roleSet) {
+    public User(String name, String lastName, Byte age, String email, String password, Set<Role> roleSet) {
         this.name = name;
         this.lastName = lastName;
+        this.age = age;
         this.email = email;
-        this.username = username;
         this.password = password;
         this.roleSet = roleSet;
     }
@@ -66,7 +67,7 @@ public class User implements UserDetails {
     }
 
     public String getRole(){
-        if (this.roleSet.size() == 2) return roleSet.toArray()[1].toString().toLowerCase();
+        if (this.roleSet.size() == 2) return roleSet.toArray()[0].toString().toLowerCase()+ " " + roleSet.toArray()[1].toString().toLowerCase();
         else return roleSet.toArray()[0].toString().toLowerCase();
     }
 
@@ -90,10 +91,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -104,6 +101,14 @@ public class User implements UserDetails {
 
     public void setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
+    }
+
+    public Byte getAge() {
+        return age;
+    }
+
+    public void setAge(Byte age) {
+        this.age = age;
     }
 
     @Override
@@ -118,7 +123,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
@@ -146,11 +151,11 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(email, user.email) && Objects.equals(roleSet, user.roleSet) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return id == user.id && Objects.equals(age, user.age) && Objects.equals(email, user.email) && Objects.equals(roleSet, user.roleSet) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roleSet, id, name, lastName, email, username, password);
+        return Objects.hash(roleSet, id, name, lastName, age, email, password);
     }
 }

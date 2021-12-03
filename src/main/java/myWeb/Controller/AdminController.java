@@ -5,6 +5,7 @@ import myWeb.Model.User;
 import myWeb.Service.RoleService;
 import myWeb.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -26,70 +27,63 @@ public class AdminController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping(value = "/admin/hello", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model) {
-        List<String> messages = new ArrayList<>();
-        messages.add("Hello!");
-        messages.add("Welcome to my web page.");
-        messages.add("Below are your available actions:");
-        model.addAttribute("messages", messages);
-        return "admin/hello";
-    }
-
-    @GetMapping(value = "/admin/userList")
+    @GetMapping(value = "/admin")
     public ModelAndView allUsers() {
+        User admin = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<User> users = userService.getAllUsers();
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("admin/userList");
+        modelAndView.setViewName("admin/admin");
         modelAndView.addObject("userlst", users);
+        modelAndView.addObject("admin",admin);
         return modelAndView;
     }
 
     @GetMapping(value = "/admin/newUser")
     public String newUser(Model model){
+        User admin = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("admin", admin);
         model.addAttribute("user", new User());
         return "admin/newUser";
     }
 
     @PostMapping("/admin/newUser")
     public String create(@ModelAttribute("user") User user,
-                         @RequestParam(required = false) String adminAuth){
-        return userManipulation(user, adminAuth);
+                         @RequestParam(required = false) String[] auth){
+        return userManipulation(user, auth);
     }
 
-    @GetMapping(value = "/admin/editUser/{id}")
-    public ModelAndView editUser(@PathVariable("id") long id){
-        ModelAndView modelAndView = new ModelAndView();
-        User user = userService.getUserById(id);
-        Set<Role> roleSet = user.getRoleSet();
-        if (roleSet.size() == 2) modelAndView.addObject("authAdmin",true);
-        modelAndView.setViewName("admin/editUser");
-        modelAndView.addObject("user", user);
-        return modelAndView;
+    @GetMapping(value = "/admin/findUser")
+    @ResponseBody
+    public User editUser(@RequestParam("id") long id){
+        return userService.getUserById(id);
     }
 
     @PostMapping("/admin/editUser")
     public String edit(@ModelAttribute("user") User user,
-                       @RequestParam(required = false) String adminAuth){
-        return userManipulation(user, adminAuth);
+                       @RequestParam(required = false) String[] auth){
+        return userManipulation(user, auth);
     }
 
-    private String userManipulation(User user, String adminAuth) {
+    private String userManipulation(User user, String[] auth) {
         Set<Role> roleSet = new HashSet<>();
-        roleSet.add(roleService.getAuthByName("User"));
-        if (adminAuth != null && adminAuth.equals("Admin"))
+        if (auth.length == 2){
+            roleSet.add(roleService.getAuthByName("User"));
             roleSet.add(roleService.getAuthByName("Admin"));
+        } else {
+            if (auth[0].equals("Admin")) roleSet.add(roleService.getAuthByName("Admin"));
+            else roleSet.add(roleService.getAuthByName("User"));
+        }
 
         user.setRoleSet(roleSet);
         userService.saveUser(user);
 
-        return "redirect:/admin/userList";
+        return "redirect:/admin";
     }
 
-    @GetMapping("/admin/deleteUser/{id}")
-    public String deleteUser(@PathVariable("id") long id){
+    @PostMapping(value = "admin/deleteUser")
+    public String deleteUser(@RequestParam("id") Long id){
         userService.deleteUser(userService.getUserById(id));
-        return "redirect:/admin/userList";
+        return "redirect:/admin";
     }
 
 }

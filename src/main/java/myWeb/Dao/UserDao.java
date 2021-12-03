@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface UserDao extends JpaRepository<User, Long> {
-    @Query("SELECT u FROM User u WHERE u.username = :username")
+    @Query("SELECT u FROM User u WHERE u.email = :username")
     User loadUserByUsername(@Param("username") String username);
 
 }

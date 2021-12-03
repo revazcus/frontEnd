@@ -15,21 +15,11 @@ import java.util.List;
 @Controller
 public class UserController {
 
-	@RequestMapping(value = "/user/hello", method = RequestMethod.GET)
-	public String printWelcome(ModelMap model) {
-		List<String> messages = new ArrayList<>();
-		messages.add("Hello!");
-		messages.add("Welcome to my web page.");
-		messages.add("Below are your available actions:");
-		model.addAttribute("messages", messages);
-		return "user/hello";
-	}
-
-	@GetMapping("/user/showUser")
+	@GetMapping("/user")
 	public ModelAndView showUser() {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("user/showUser");
+		modelAndView.setViewName("/user/user");
 		modelAndView.addObject("user", user);
 		return modelAndView;
 	}
