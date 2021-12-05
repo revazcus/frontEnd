@@ -10,8 +10,11 @@ import java.util.List;
 @Service
 public class RoleServiceImpl implements RoleService{
 
-    @Autowired
-    RoleDao roleDao;
+    final RoleDao roleDao;
+
+    public RoleServiceImpl(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
 
     @Override
     public Role getAuthByName(String name) {
@@ -27,5 +30,10 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public List<Role> getAllRoles() {
         return roleDao.findAll();
+    }
+
+    @Override
+    public void saveRole(Role role){
+        roleDao.save(role);
     }
 }

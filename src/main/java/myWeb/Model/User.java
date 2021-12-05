@@ -15,7 +15,7 @@ import static javax.persistence.CascadeType.*;
 @Table(name="user")
 public class User implements UserDetails {
 
-    @ManyToMany(cascade = {MERGE, PERSIST},fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {MERGE},fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_And_Roles",
             joinColumns = @JoinColumn(name = "user_id"),
