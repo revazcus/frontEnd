@@ -1,5 +1,7 @@
 package myWeb.Model;
 
+import myWeb.Service.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,6 +16,10 @@ import static javax.persistence.CascadeType.*;
 @Entity
 @Table(name="user")
 public class User implements UserDetails {
+
+    @Autowired
+    @Transient
+    RoleService roleService;
 
     @ManyToMany(cascade = {MERGE},fetch = FetchType.EAGER)
     @JoinTable(
@@ -99,7 +105,15 @@ public class User implements UserDetails {
         return roleSet;
     }
 
-    public void setRoleSet(Set<Role> roleSet) {
+    public void setRoleSet(String[] roleSetArr) {
+        Set<Role> roleSet = new HashSet<>();
+        if (roleSetArr.length == 2){
+            roleSet.add(roleService.getAuthByName("User"));
+            roleSet.add(roleService.getAuthByName("Admin"));
+        } else {
+            if (roleSetArr[0].equals("Admin")) roleSet.add(roleService.getAuthByName("Admin"));
+            else roleSet.add(roleService.getAuthByName("User"));
+        }
         this.roleSet = roleSet;
     }
 
@@ -157,5 +171,18 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(roleSet, id, name, lastName, age, email, password);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "roleSet=" + roleSet +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
