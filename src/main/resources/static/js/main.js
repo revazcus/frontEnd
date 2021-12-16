@@ -33,9 +33,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     };
     //Show users in table
-    api.getUsers().then(res => api.showUsers(res))
+    api.getUsers().then(res => api.showUsers(res)) //показывает пользователей, заполняет таблицу
     //Add Listeners
-    document.addEventListener("click", async function (e){
+    document.addEventListener("click", async function (e){ //недоработанные эдит и делит
         if (e.target.classList.contains("editUser")) {
             let uid = e.target.closest("tr").getAttribute("id");
             let user = await api.getUser(uid);
@@ -54,25 +54,25 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     //Display input form
-    document.querySelector("button.showUserForm").addEventListener("click", function (){
+    document.querySelector("button.showUserForm").addEventListener("click", function (){ //смена вкладки на таблицу пользователей
         document.querySelector(".topButtons.onFocus").classList.remove("onFocus");
         this.classList.add("onFocus");
         document.querySelector(".cardUserList").style.display = "none";
         document.querySelector(".cardAddUserForm").style.display = "flex";
     })
 
-    document.querySelector("button.showUsers").addEventListener("click", function (){
+    document.querySelector("button.showUsers").addEventListener("click", function (){ //смена вкладки на форму нового пользователя
         document.querySelector(".topButtons.onFocus").classList.remove("onFocus");
         this.classList.add("onFocus");
         document.querySelector(".cardUserList").style.display = "flex";
         document.querySelector(".cardAddUserForm").style.display = "none";
     })
 
-    document.querySelector(".btn.addUser").addEventListener("click", async function (){
+    document.querySelector(".btn.addUser").addEventListener("click", async function (){ //добавление
         let form = document.querySelector("#addUserForm");
         let formData = new FormData(form);
         let obj = Object.fromEntries(formData);
-        obj.role = $(".roleSelect").val(); console.log(obj.role)
+        obj.role = $(".roleSelect").val(); console.log(obj)
         api.addUser(obj).then(res => res.json()).then(res => console.log(res))
         //api.showUsers([obj])
     })

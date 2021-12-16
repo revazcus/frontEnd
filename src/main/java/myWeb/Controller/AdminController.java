@@ -31,7 +31,7 @@ public class AdminController {
     @Autowired
     private RoleService roleService;
 
-    @GetMapping
+    @GetMapping //Начальная страница админа
     public ModelAndView allUsers() {
         User admin = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ModelAndView modelAndView = new ModelAndView();
@@ -40,39 +40,46 @@ public class AdminController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/api/users")
+    @GetMapping(value = "/api/users") //api отображения пользователей
     public ResponseEntity<List<User>> apiAllUsers() {
         List<User> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/api/users/{id}")
+    @GetMapping(value = "/api/users/{id}") //api отображения пользователей
     public ResponseEntity<User> editUser(@PathVariable("id") long id){
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/api/users")
+    @PostMapping(value = "/api/users") //api создания нового пользователя
     public void create(@RequestBody User user){
         System.out.println(user);
         //return new ResponseEntity<>(user, HttpStatus.OK);
         //userManipulation(user);
     }
 
-    @PutMapping("/api/users/{id}")
+    @PutMapping("/api/users/{id}") //api редактирования
     public void edit(@RequestBody User user,
                      @RequestParam(required = false) String[] role,
                      @PathVariable("id") Long id){
         userManipulation(user);
     }
 
-    private void userManipulation(User user) {
-
+    private void userManipulation(User user) { //функция где должны вставляться роли пользователю и где сохраняется пользователь
+//        Set<Role> roleSet = new HashSet<>();
+//        if (role.length == 2){
+//            roleSet.add(roleService.getAuthByName("User"));
+//            roleSet.add(roleService.getAuthByName("Admin"));
+//        } else {
+//            if (role[0].equals("Admin")) roleSet.add(roleService.getAuthByName("Admin"));
+//            else roleSet.add(roleService.getAuthByName("User"));
+//        }
 //
 //        user.setRoleSet(roleSet);
         userService.saveUser(user);
     }
 
-    @DeleteMapping(value = "/api/users/{id}")
+    @DeleteMapping(value = "/api/users/{id}") //api удаления
     public void deleteUser(@PathVariable("id") Long id){
         userService.deleteUser(userService.getUserById(id));
     }
