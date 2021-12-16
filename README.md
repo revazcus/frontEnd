@@ -1,5 +1,4 @@
-# bootstrap
-Сделано как показано на скриншотах с мелкими художестенными свободами
+# Фронт енд
 
 АДМИН - mail: Admin@mail /// password: root
 ЮЗЕР - mail: User@mail /// password: user
