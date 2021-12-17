@@ -50,9 +50,9 @@ public class Application implements CommandLineRunner {
         roleSetUser.add(roleService.getAuthByName("User"));
 
         User admin = new User("Admin","Man", (byte) 19,"Admin@mail","root",roleSet);
-
+        admin.setRoleSetTemp(new String[]{"Admin", "User"});
         User user = new User("User", "Guy", (byte) 17, "User@mail","user", roleSetUser);
-
+        user.setRoleSetTemp(new String[]{"User"});
 
         userService.saveUser(admin);
         userService.saveUser(user);

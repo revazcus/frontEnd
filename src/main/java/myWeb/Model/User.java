@@ -4,10 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.CascadeType.*;
 
@@ -42,6 +39,9 @@ public class User implements UserDetails {
 
     @Column(name = "password")
     private String password;
+
+    @Transient
+    private String[] roleSetTemp;
 
     public User(String name, String lastName, Byte age, String email, String password, Set<Role> roleSet) {
         this.name = name;
@@ -101,6 +101,14 @@ public class User implements UserDetails {
 
     public void setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
+    }
+
+    public void setRoleSetTemp(String[] roleSetTemp) {
+        this.roleSetTemp = roleSetTemp;
+    }
+
+    public String[] getRoleSetTemp(){
+        return roleSetTemp;
     }
 
     public Byte getAge() {
