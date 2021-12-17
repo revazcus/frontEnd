@@ -79,8 +79,9 @@ public class AdminController {
     }
 
     @DeleteMapping(value = "/api/users/{id}") //api удаления
-    public void deleteUser(@PathVariable("id") Long id){
+    public ResponseEntity deleteUser(@PathVariable("id") Long id){
         userService.deleteUser(userService.getUserById(id));
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }
